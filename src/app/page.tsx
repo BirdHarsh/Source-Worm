@@ -1,12 +1,12 @@
+'use client';
 
-
+import PrivateRoute from '@/components/PrivateRoute';
 
 export default function Home() {
-
   return (
-    <>
-      <h1>Home</h1>
-      
-    </>
+    <PrivateRoute>
+      <h1>Welcome to the Home Page</h1>
+      <p>This page is protected and only accessible by authenticated users.</p>
+    </PrivateRoute>
   );
 }
