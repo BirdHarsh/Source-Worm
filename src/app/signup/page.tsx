@@ -1,4 +1,3 @@
-// app/signup/page.tsx
 'use client';
 
 import { useState } from 'react';
@@ -30,37 +29,34 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-8 bg-white shadow-lg rounded-lg">
-      <h1 className="text-3xl font-semibold mb-6">Sign Up</h1>
-      <form onSubmit={handleSignup}>
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            className="w-full p-3 border rounded-md"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Password</label>
-          <input
-            type="password"
-            className="w-full p-3 border rounded-md"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition"
-        >
-          Sign Up
-        </button>
-      </form>
-    </div>
+    <div className="form-container">
+    <h1 className="form-header">Sign Up</h1>
+    <form onSubmit={handleSignup}>
+      <div className="mb-4">
+        <label className="block text-sm font-medium">Email</label>
+        <input
+          type="email"
+          className="form-input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium">Password</label>
+        <input
+          type="password"
+          className="form-input"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      {error && <p className="error-message">{error}</p>}
+      <button type="submit" className="form-button">
+        Sign Up
+      </button>
+    </form>
+  </div>
   );
 }

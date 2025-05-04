@@ -4,3 +4,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.form-container {
+    @apply max-w-md mx-auto p-8 bg-white shadow-lg rounded-lg;
+  }
+  
+  .form-header {
+    @apply text-3xl font-semibold mb-6;
+  }
+  
+  .form-input {
+    @apply w-full p-3 border rounded-md mb-4;
+  }
+  
+  .form-button {
+    @apply w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition;
+  }
+  
+  .error-message {
+    @apply text-red-500 text-sm mb-4;
+  }

@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+// middleware.ts (or middleware.js)
+import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from './lib/jwt';
 
 export function middleware(req: NextRequest) {
@@ -10,13 +10,13 @@ export function middleware(req: NextRequest) {
   }
 
   try {
-    verifyToken(token);
-    return NextResponse.next();
+    verifyToken(token);  // Validate the token
+    return NextResponse.next();  // Continue the request
   } catch {
-    return NextResponse.redirect(new URL('/signin', req.url));
+    return NextResponse.redirect(new URL('/signin', req.url));  // Invalid token, redirect to signin
   }
 }
 
 export const config = {
-  matcher: ['/protected/:path*'], // Protect this path or others
+  matcher: ['/protected/:path*'],
 };

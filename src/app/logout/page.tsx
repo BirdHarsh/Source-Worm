@@ -1,28 +1,18 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
-export default function LogoutButton() {
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    const response = await fetch('/api/auth/logout', {
-      method: 'POST',
-    });
-
-    if (response.ok) {
-      router.push('/signin');  // Redirect to signin page after logout
-    } else {
-      console.error('Failed to logout');
-    }
-  };
+export default function LogoutPage() {
+  const { logout } = useAuth();
 
   return (
-    <button
-      onClick={handleLogout}
-      className="bg-red-600 text-white p-3 rounded-md hover:bg-red-700 transition"
-    >
-      Logout
-    </button>
+    <div className="flex justify-center items-center h-screen">
+      <button
+        onClick={logout}
+        className="bg-red-600 text-white p-3 rounded-md hover:bg-red-700 transition"
+      >
+        Logout
+      </button>
+    </div>
   );
 }

@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: any;
-  login: (token: string) => void;
+  login: () => void;
   logout: () => void;
 }
 
@@ -14,40 +13,39 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<any>(null);
   const router = useRouter();
 
-  // Check token on mount
+  // Check auth status on mount
   useEffect(() => {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
-      '$1'
-    );
-    if (token) {
-      setIsAuthenticated(true);
-      const userInfo = JSON.parse(atob(token.split('.')[1]));
-      setUser(userInfo);
-    }
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/api/user/profile', { credentials: 'include' });
+        setIsAuthenticated(res.ok);
+      } catch {
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuth();
   }, []);
 
-  // Login function
-  const login = (token: string) => {
+  const login = () => {
     setIsAuthenticated(true);
-    document.cookie = `token=${token}; path=/;`;
-    const userInfo = JSON.parse(atob(token.split('.')[1])); // Decode JWT token to get user info
-    setUser(userInfo);
   };
 
-  // Logout function
-  const logout = () => {
-    setIsAuthenticated(false);
-    setUser(null);
-    document.cookie = 'token=; max-age=0; path=/';  // Clear token cookie
-    router.push('/signin');  // Redirect to sign-in page
-  };
+ // Inside AuthContext.tsx
+
+const logout = async () => {
+  await fetch('/api/auth/logout', { method: 'POST' });
+
+  setIsAuthenticated(false);
+ 
+  router.push('/signin');
+};
+
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -55,8 +53,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };

@@ -1,3 +1,4 @@
+// /api/auth/signin.ts
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { signToken } from '@/lib/jwt';
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
   // Sign JWT token
   const token = signToken({ id: user.id, email: user.email });
 
-  // Set JWT in HTTP-only cookie
+  // Set JWT token in HTTP-only cookie
   const cookie = serialize('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
